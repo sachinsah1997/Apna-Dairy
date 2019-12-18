@@ -3,7 +3,6 @@ package com.xdeveloperart.apnadairy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
@@ -23,7 +22,7 @@ public class SplashScreen extends AppCompatActivity {
                 catch(InterruptedException e){
                     e.printStackTrace();
                 } finally {
-                    Intent openMain = new Intent(SplashScreen.this, MainActivity.class);
+                    Intent openMain = new Intent(SplashScreen.this, AuthenticationActivity.class);
                     startActivity(openMain);
                     finish();
                 }
