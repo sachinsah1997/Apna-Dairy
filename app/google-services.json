@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "768066844838",
+    "firebase_url": "https://apna-dairy.firebaseio.com",
+    "project_id": "apna-dairy",
+    "storage_bucket": "apna-dairy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768066844838:android:dbb5943c0a66e216fcdc67",
+        "android_client_info": {
+          "package_name": "com.xdeveloperart.apnadairy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768066844838-ldao69qod72rm3kjeeu3fobjcuvivqei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbFQ2qCi1YAmlz2bz3tMu3_Q0yirC3zpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "768066844838-ldao69qod72rm3kjeeu3fobjcuvivqei.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

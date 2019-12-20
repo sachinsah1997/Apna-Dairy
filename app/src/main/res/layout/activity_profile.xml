@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="36dp"
+        android:text="Edit Profile"
+        android:textColor="@color/colorAccent"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:layout_alignLeft="@+id/pnumber"
+        android:layout_marginLeft="269dp"
+        android:layout_marginTop="0dp"
+        android:text="edit"
+        android:textColor="@color/colorAccent" />
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="94dp"
+        android:layout_height="96dp"
+        android:layout_alignEnd="@+id/updateprofile"
+        android:layout_alignRight="@+id/updateprofile"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp" />
+
+
+
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pname"
+        android:layout_alignStart="@+id/pname"
+        android:layout_marginBottom="-112dp"
+        android:text="Display Name"
+        android:textColor="@color/colorAccent"
+        android:layout_alignLeft="@+id/pname" />
+
+    <EditText
+        android:id="@+id/pname"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="112dp"
+        android:background="@drawable/edittext_background"
+        android:inputType="phone"
+        android:padding="10dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pnumber"
+        android:layout_alignStart="@+id/pnumber"
+        android:layout_marginBottom="-203dp"
+        android:text="Phone Number"
+        android:textColor="@color/colorAccent"
+        android:layout_alignLeft="@+id/pnumber" />
+
+    <EditText
+        android:id="@+id/pnumber"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="203dp"
+        android:background="@drawable/edittext_background"
+        android:inputType="phone"
+        android:padding="10dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pnumber"
+        android:layout_alignStart="@+id/pnumber"
+        android:layout_marginBottom="-290dp"
+        android:text="Address"
+        android:textColor="@color/colorAccent"
+        android:layout_alignLeft="@+id/pnumber" />
+
+    <EditText
+        android:id="@+id/paddress"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="291dp"
+        android:background="@drawable/edittext_background"
+        android:inputType="phone"
+        android:padding="10dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_above="@+id/radioGroup1"
+        android:layout_alignStart="@+id/radioGroup1"
+        android:layout_marginBottom="-380dp"
+        android:text="Gender"
+        android:textColor="@color/colorAccent"
+        android:layout_alignLeft="@+id/radioGroup1" />
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="380dp"
+        android:layout_marginLeft="24dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="male" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:text="female" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/updateprofile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="79dp"
+        android:background="@color/colorAccent"
+        android:text="Continue"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>
