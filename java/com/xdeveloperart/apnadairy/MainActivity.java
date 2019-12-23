@@ -89,99 +89,97 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         // set the toolbar title
         Fragment fragment = null;
         String title = getString(R.string.app_name);
-//        switch (position) {
-//            case 0:
-//                fragment = new HomeFragment();
-//               subtitle = getString(R.string.title_home);
-//                // set the toolbar title
-//                getSupportActionBar().setSubtitle(subtitle);
-//                break;
-//
-//           case 1:
-//                fragment = new DevelopPhase();
-//                 subtitle = getString(R.string.title_myorder);
-//                getSupportActionBar().setSubtitle(subtitle);
-//                break;
-//
-//                case 2:
-//                    fragment = new DevelopPhase();
-//                    subtitle = getString(R.string.title_invite);
-//                    getSupportActionBar().setSubtitle(subtitle);
-//                break;
-//
-//            case 3:
-//                Intent i=new Intent(getApplicationContext(),AuthenticationActivity.class);
-//                startActivity(i);
-//                subtitle = getString(R.string.title_feedback);
-//                getSupportActionBar().setSubtitle(subtitle);
-//                break;
-//
-//            case 4:
-//                fragment = new DevelopPhase();
-//                subtitle = getString(R.string.title_rateus);
-//                getSupportActionBar().setSubtitle(subtitle);
-//                break;
-//
-//            default:
-//                break;
-//        }
+        switch (position) {
+            case 0:
+                fragment = new CustomerFragment();
+               subtitle = getString(R.string.title_home);
+                // set the toolbar title
+                getSupportActionBar().setSubtitle(subtitle);
+                break;
+
+           case 1:
+                fragment = new ProductFragment();
+                 subtitle = getString(R.string.title_product);
+                getSupportActionBar().setSubtitle(subtitle);
+                break;
+
+                case 2:
+                    fragment = new CustomerFragment();
+                    subtitle = getString(R.string.title_customer);
+                    getSupportActionBar().setSubtitle(subtitle);
+                break;
+
+            case 3:
+                fragment = new SalesmanFragment();
+                subtitle = getString(R.string.title_salesman);
+                getSupportActionBar().setSubtitle(subtitle);
+                break;
+
+            case 4:
+                fragment = new AreaFragment();
+                subtitle= getString(R.string.title_area);
+                getSupportActionBar().setSubtitle(subtitle);
+
+            default:
+                break;
+        }
 
 
-//        if (fragment != null) {
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            FragmentmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.container_body, fragment);
-//            fragmentTransaction.commit();
-//
-//            // set the toolbar title
-//            getSupportActionBar().setTitle(title);
-//        }
-//    }
-//        BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-//                = new BottomNavigationView.OnNavigationItemSelectedListener() {
-//
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                String subtitle;
-//
-//                Fragment fragment;
-//            switch (item.getItemId()) {
-//                case R.id.navigation_shop:
-//                    fragment = new HomeFragment();
-//                    loadFragment(fragment);
-//
-//                    subtitle = getString(R.string.title_shop);
-//                    getSupportActionBar().setSubtitle(subtitle);
-//
-//                    return true;
-//                case R.id.navigation_gifts:
-//
-//                    fragment = new DevelopPhase();
-//                    loadFragment(fragment);
-//                    subtitle = getString(R.string.title_gifts);
-//                    getSupportActionBar().setSubtitle(subtitle);
-//
-//                    return true;
-//                case R.id.navigation_cart:
-//
-//                    fragment = new DevelopPhase();
-//                    loadFragment(fragment);
-//                    subtitle = getString(R.string.title_cart);
-//                    getSupportActionBar().setSubtitle(subtitle);
-//
-//                    return true;
-//                case R.id.navigation_profile:
-//
-//                    fragment = new DevelopPhase();
-//                    loadFragment(fragment);
-//                    subtitle = getString(R.string.title_profile);
-//                    getSupportActionBar().setSubtitle(subtitle);
-//
-//                    return true;
-//            }
-//                return true;
-//            }};
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.commit();
 
-    }        private void loadFragment (Fragment fragment){
+            // set the toolbar title
+            getSupportActionBar().setTitle(title);
+        }
+    }
+        BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+                = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                String subtitle;
+
+                Fragment fragment;
+            switch (item.getItemId()) {
+                case R.id.navigation_shop:
+                    fragment = new DevelopPhase();
+                    loadFragment(fragment);
+
+                    subtitle = getString(R.string.title_shop);
+                    getSupportActionBar().setSubtitle(subtitle);
+
+                    return true;
+                case R.id.navigation_gifts:
+
+                    fragment = new DevelopPhase();
+                    loadFragment(fragment);
+                    subtitle = getString(R.string.title_gifts);
+                    getSupportActionBar().setSubtitle(subtitle);
+
+                    return true;
+                case R.id.navigation_cart:
+
+                    fragment = new DevelopPhase();
+                    loadFragment(fragment);
+                    subtitle = getString(R.string.title_cart);
+                    getSupportActionBar().setSubtitle(subtitle);
+
+                    return true;
+                case R.id.navigation_profile:
+
+                    fragment = new AreaFragment();
+                    loadFragment(fragment);
+                    subtitle = getString(R.string.title_profile);
+                    getSupportActionBar().setSubtitle(subtitle);
+
+                    return true;
+            }
+                return true;
+            }};
+
+           private void loadFragment (Fragment fragment){
             // load fragment
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.container_body, fragment);
