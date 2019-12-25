@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="match_parent"
+    tools:context=".SalesmanFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft ="80dp"
+                android:layout_marginTop ="41dp"
+                android:text="Add New Salesman"
+                android:textColor="@color/colorAccent"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/sname"
+                android:layout_alignStart="@+id/sname"
+                android:layout_marginBottom="-160dp"
+                android:text="Salesman Name"
+                android:textColor="@color/colorAccent"
+                android:layout_alignLeft="@+id/sname" />
+
+            <EditText
+                android:id="@+id/sname"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="170dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/snumber"
+                android:layout_alignStart="@+id/snumber"
+                android:layout_marginBottom="-253dp"
+                android:text="Phone Number"
+                android:textColor="@color/colorAccent"
+                android:layout_alignLeft="@+id/snumber" />
+
+            <EditText
+                android:id="@+id/snumber"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="263dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"/>
+
+            <Button
+                android:id="@+id/addSalesman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="400dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorAccent"
+                android:text="Click here to add"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

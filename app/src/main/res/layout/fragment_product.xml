@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="match_parent"
+    tools:context=".ProductFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft ="80dp"
+                android:layout_marginTop ="41dp"
+                android:text="Add New Product"
+                android:textColor="@color/colorAccent"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/pname"
+                android:layout_alignStart="@+id/pname"
+                android:layout_marginBottom="-112dp"
+                android:text="Product Name"
+                android:textColor="@color/colorAccent"
+                android:layout_alignLeft="@+id/pname" />
+
+            <EditText
+                android:id="@+id/pname"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="112dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ppc"
+                android:layout_alignStart="@+id/ppc"
+                android:layout_marginBottom="-203dp"
+                android:text="Pcs. per Carat"
+                android:textColor="@color/colorAccent"
+                android:layout_alignLeft="@+id/ppc" />
+
+            <EditText
+                android:id="@+id/ppc"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="203dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ppc"
+                android:layout_alignStart="@+id/ppc"
+                android:layout_marginBottom="-290dp"
+                android:text="Cost Price"
+                android:textColor="@color/colorAccent"
+                android:layout_alignLeft="@+id/ppc" />
+
+            <EditText
+                android:id="@+id/costprice"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="291dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp" />
+
+	     <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ppc"
+                android:layout_alignStart="@+id/ppc"
+                android:layout_marginBottom="-380dp"
+                android:text="Sales Price"
+                android:textColor="@color/colorAccent"
+                android:layout_alignLeft="@+id/ppc" />
+
+            <EditText
+                android:id="@+id/salesprice"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="380dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/addProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="440dp"
+                android:background="@color/colorAccent"
+                android:text="Click here to add"
+                android:textColor="#fff"
+                android:textStyle="bold"
+          />
+
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,12 +22,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.firebase:firebase-firestore:21.3.1'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
@@ -39,11 +39,17 @@ dependencies {
     //For PinView EditText
     implementation 'com.chaos.view:pinview:1.3.2'
     //For playing .gif images
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
     //croppping profile image
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
     //multidex
     implementation 'com.android.support:multidex:1.0.3'
+    //For Navigation drawer
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    //for navigation design
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.0.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
