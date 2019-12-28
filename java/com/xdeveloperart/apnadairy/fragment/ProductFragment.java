@@ -1,4 +1,4 @@
-package com.xdeveloperart.apnadairy;
+package com.xdeveloperart.apnadairy.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.xdeveloperart.apnadairy.adapter.ProductAdapter;
+import com.xdeveloperart.apnadairy.R;
 
 public class ProductFragment extends Fragment {
 

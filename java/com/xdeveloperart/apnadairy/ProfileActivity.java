@@ -26,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        Button signout = (Button) findViewById(R.id.updateprofile);
+        Button signout = findViewById(R.id.updateprofile);
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

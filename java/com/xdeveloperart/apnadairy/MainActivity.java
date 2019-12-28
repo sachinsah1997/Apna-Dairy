@@ -15,21 +15,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.xdeveloperart.apnadairy.fragment.AreaFragment;
+import com.xdeveloperart.apnadairy.fragment.RecycleListViewFragment;
+import com.xdeveloperart.apnadairy.fragment.DevelopPhase;
+import com.xdeveloperart.apnadairy.navigationdrawer.FragmentDrawer;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private static String TAG = MainActivity.class.getSimpleName();
     FirebaseAuth mAuth;
     private Toolbar mToolbar;
-
     private FragmentDrawer drawerFragment;
+    Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         mAuth = FirebaseAuth.getInstance();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -42,9 +46,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         // display the first navigation drawer view on app launch
         displayView(0);
 
-//        //botom navigation
-//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //botom navigation
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 
@@ -58,12 +62,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
                     mAuth.signOut();
                     startActivity(new Intent(getApplicationContext(),AuthenticationActivity.class));
@@ -91,32 +91,40 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new CustomerFragment();
+                fragment = new DevelopPhase();
                subtitle = getString(R.string.title_home);
                 // set the toolbar title
                 getSupportActionBar().setSubtitle(subtitle);
                 break;
 
            case 1:
-                fragment = new ProductFragment();
+               fragment = new RecycleListViewFragment();
+               bundle.putString("database", "productInfo");
+               fragment.setArguments(bundle);
                  subtitle = getString(R.string.title_product);
                 getSupportActionBar().setSubtitle(subtitle);
                 break;
 
                 case 2:
-                    fragment = new CustomerFragment();
+                    fragment = new RecycleListViewFragment();
+                    bundle.putString("database", "customerInfo");
+                    fragment.setArguments(bundle);
                     subtitle = getString(R.string.title_customer);
                     getSupportActionBar().setSubtitle(subtitle);
                 break;
 
             case 3:
-                fragment = new SalesmanFragment();
+                fragment = new RecycleListViewFragment();
+                bundle.putString("database", "salesmanInfo");
+                fragment.setArguments(bundle);
                 subtitle = getString(R.string.title_salesman);
                 getSupportActionBar().setSubtitle(subtitle);
                 break;
 
             case 4:
-                fragment = new AreaFragment();
+                fragment = new RecycleListViewFragment();
+                bundle.putString("database", "areaInfo");
+                fragment.setArguments(bundle);
                 subtitle= getString(R.string.title_area);
                 getSupportActionBar().setSubtitle(subtitle);
 
@@ -130,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.commit();
-
-            // set the toolbar title
             getSupportActionBar().setTitle(title);
         }
     }

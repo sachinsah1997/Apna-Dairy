@@ -1,4 +1,4 @@
-package com.xdeveloperart.apnadairy;
+package com.xdeveloperart.apnadairy.adapter;
 
 public class CustomerAdapter {
 

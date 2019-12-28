@@ -1,9 +1,10 @@
-package com.xdeveloperart.apnadairy;
+package com.xdeveloperart.apnadairy.navigationdrawer;
 
 public class NavDrawerItem {
 
     private boolean showNotify;
     private String title;
+    private String subtitle;
 
     public String getSubtitle() {
         return subtitle;
@@ -13,11 +14,7 @@ public class NavDrawerItem {
         this.subtitle = subtitle;
     }
 
-    private String subtitle;
-
-
     public NavDrawerItem() {
-
     }
 
     public NavDrawerItem(boolean showNotify, String title) {
@@ -33,7 +30,7 @@ public class NavDrawerItem {
         this.showNotify = showNotify;
     }
 
-        public String getTitle() {
+    public String getTitle() {
         return title;
     }
 

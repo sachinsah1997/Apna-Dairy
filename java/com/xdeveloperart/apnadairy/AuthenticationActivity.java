@@ -45,6 +45,7 @@ import com.google.firebase.storage.UploadTask;
 import com.shuhart.stepview.StepView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.xdeveloperart.apnadairy.adapter.ProfileApdater;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -56,13 +57,10 @@ public class AuthenticationActivity extends AppCompatActivity {
     RelativeLayout layout4;
     StepView stepView;
     AlertDialog dialog_verifying, profile_dialog;
-
     private static String uniqueIdentifier = null;
     private static final String UNIQUE_ID = "UNIQUE_ID";
     private static final long ONE_HOUR_MILLI = 60 * 60 * 1000;
-
     private static final String TAG = "FirebasePhoneNumAuth";
-
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String phoneNumber;
     private Button sendCodeButton;
@@ -74,25 +72,20 @@ public class AuthenticationActivity extends AppCompatActivity {
     private EditText phoneNum;
     private PinView verifyCodeET;
     private TextView phonenumberText;
-
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private FirebaseAuth mAuth;
     public String downloadUrlString;
-    //profile updating
-
     public static final String FB_STORAGE_PATH = "profileimage/";
     public static final String FB_DATABASE_PATH = "profiledetail";
     public static final int REQUEST_CODE = 1;
     private Uri imgUri, cropUri;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
-    //  private ImageView imageView;
     private ImageView imageView;
     private EditText pname, paddress, pnumber;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
-
 
     public void onStart() {
         super.onStart();
@@ -102,7 +95,6 @@ public class AuthenticationActivity extends AppCompatActivity {
             finish();
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -115,34 +107,28 @@ public class AuthenticationActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
 
-        layout1 = (LinearLayout) findViewById(R.id.layout1);
-        layout2 = (LinearLayout) findViewById(R.id.layout2);
-        layout3 = (LinearLayout) findViewById(R.id.layout3);
-        layout4 = (RelativeLayout) findViewById(R.id.layout4);
+        layout1 = findViewById(R.id.layout1);
+        layout2 = findViewById(R.id.layout2);
+        layout3 = findViewById(R.id.layout3);
+        layout4 = findViewById(R.id.layout4);
 
-        sendCodeButton = (Button) findViewById(R.id.submit1);
-        verifyCodeButton = (Button) findViewById(R.id.submit2);
-        button3 = (Button) findViewById(R.id.submit3);
-        phoneNum = (EditText) findViewById(R.id.phonenumber);
-        verifyCodeET = (PinView) findViewById(R.id.pinView);
-        phonenumberText = (TextView) findViewById(R.id.phonenumberText);
-
-        //  buttonlate=(Button)findViewById(R.id.updateprofile);
+        sendCodeButton = findViewById(R.id.submit1);
+        verifyCodeButton = findViewById(R.id.submit2);
+        button3 = findViewById(R.id.submit3);
+        phoneNum = findViewById(R.id.phonenumber);
+        verifyCodeET = findViewById(R.id.pinView);
+        phonenumberText = findViewById(R.id.phonenumberText);
 
         stepView = findViewById(R.id.step_view);
         stepView.setStepsNumber(3);
         stepView.go(0, true);
         layout1.setVisibility(View.VISIBLE);
 
-
-        //profile
-
         imageView = (ImageView) findViewById(R.id.image);
         pname = (EditText) findViewById(R.id.pname);
         paddress = (EditText) findViewById(R.id.paddress);
         pnumber = (EditText) findViewById(R.id.pnumber);
         radioSexGroup = (RadioGroup) findViewById(R.id.radioGroup1);
-
 
         sendCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,19 +183,14 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(String verificationId,
                                    PhoneAuthProvider.ForceResendingToken token) {
-
-                // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 mResendToken = token;
-
-                // ...
             }
         };
 
         verifyCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String verificationCode = verifyCodeET.getText().toString();
                 if (verificationCode.isEmpty()) {
                     Toast.makeText(AuthenticationActivity.this, "Enter verification code", Toast.LENGTH_SHORT).show();
@@ -226,7 +207,6 @@ public class AuthenticationActivity extends AppCompatActivity {
 
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
                     signInWithPhoneAuthCredential(credential);
-
                 }
             }
         });
@@ -234,7 +214,6 @@ public class AuthenticationActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (currentStep < stepView.getStepCount() - 1) {
                     currentStep++;
                     stepView.go(currentStep, true);
@@ -247,12 +226,10 @@ public class AuthenticationActivity extends AppCompatActivity {
                 show.setView(alertLayout);
                 show.setCancelable(false);
 
-
                 layout1.setVisibility(View.GONE);
                 layout2.setVisibility(View.GONE);
                 layout3.setVisibility(View.GONE);
                 layout4.setVisibility(View.VISIBLE);
-
             }
         });
     }
@@ -263,41 +240,28 @@ public class AuthenticationActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+
                             Log.d(TAG, "signInWithCredential:success");
                             dialog_verifying.dismiss();
-                           /* if (currentStep < stepView.getStepCount() - 1) {
-                                currentStep++;
-                                stepView.go(currentStep, true);
-                            } else {
-                                stepView.done(true);
-                            }*/
+
                             layout1.setVisibility(View.GONE);
                             layout2.setVisibility(View.GONE);
                             layout3.setVisibility(View.VISIBLE);
-                            // ...
-
 
                             FirebaseUser currentFirebaseUser = mAuth.getInstance().getCurrentUser();
                             String phone = currentFirebaseUser.getPhoneNumber();
-
                             pnumber.setText(phone);
-
-
                         } else {
-
                             dialog_verifying.dismiss();
                             Toast.makeText(AuthenticationActivity.this, "Something wrong", Toast.LENGTH_SHORT).show();
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-
                             }
                         }
                     }
                 });
     }
 
-    // uploading profile detail
     public void btnBrowse_Click(View v) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -311,29 +275,22 @@ public class AuthenticationActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imgUri = data.getData();
 
-
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1, 1)
-                    .start(this);
+            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1, 1).start(this);
         }
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            if (resultCode == RESULT_OK) {
-                cropUri = result.getUri();
-
+            if (resultCode == RESULT_OK) { cropUri = result.getUri();
                 try {
                     bm = MediaStore.Images.Media.getBitmap(getContentResolver(), cropUri);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 imageView.setImageBitmap(bm);
-
             }
         }
     }
-
 
     public String getImageExt(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
@@ -341,16 +298,13 @@ public class AuthenticationActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-
     @SuppressWarnings("VisibleForTests")
     public void Upload_Click(View v) {
-
 
         if (imgUri != null) {
             final ProgressDialog dialog = new ProgressDialog(this);
             dialog.setTitle("Setting up your profile");
             dialog.show();
-
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -379,7 +333,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
 
-            //Dimiss dialog when success
                         dialog.dismiss();
 
                         Uri downloadUri = task.getResult();
