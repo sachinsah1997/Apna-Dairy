@@ -1,4 +1,4 @@
-package com.xdeveloperart.apnadairy;
+package com.xdeveloperart.apnadairy.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.xdeveloperart.apnadairy.R;
+import com.xdeveloperart.apnadairy.adapter.SalesmanAdapter;
 
 public class SalesmanFragment extends Fragment {
 

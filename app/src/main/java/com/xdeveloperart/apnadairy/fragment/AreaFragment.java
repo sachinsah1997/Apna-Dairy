@@ -1,4 +1,4 @@
-package com.xdeveloperart.apnadairy;
+package com.xdeveloperart.apnadairy.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.xdeveloperart.apnadairy.adapter.AreaAdapter;
+import com.xdeveloperart.apnadairy.R;
 
 public class AreaFragment extends Fragment {
 
@@ -35,8 +36,8 @@ public class AreaFragment extends Fragment {
     
         View layout = inflater.inflate(R.layout.fragment_area, container, false);
 
-        areaName = (EditText)layout.findViewById(R.id.name);
-	    addAreaButton = (Button)layout.findViewById(R.id.addArea);
+        areaName = layout.findViewById(R.id.name);
+	    addAreaButton = layout.findViewById(R.id.addArea);
        
         addAreaButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,8 +62,6 @@ public class AreaFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
 }
 
 

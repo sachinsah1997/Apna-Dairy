@@ -1,4 +1,4 @@
-package com.xdeveloperart.apnadairy;
+package com.xdeveloperart.apnadairy.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.xdeveloperart.apnadairy.R;
+import com.xdeveloperart.apnadairy.adapter.CustomerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,6 @@ public class CustomerFragment extends Fragment {
     Spinner area,salesmanAssociated;
     Button addCustomerButton;
     private DatabaseReference mDatabaseRef,mDatabaseRefArea,mDatabaseRefSalesman;
-    private String key;
 
     public CustomerFragment() {
     }
@@ -53,9 +54,7 @@ public class CustomerFragment extends Fragment {
         mDatabaseRefArea.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Is better to use a List, because you don't know the size
-                // of the iterator returned by dataSnapshot.getChildren() to
-                // initialize the array
+
                 final List<String> areaList = new ArrayList<>();
 
                 for (DataSnapshot areaSnapshot : dataSnapshot.getChildren()) {
@@ -77,11 +76,8 @@ public class CustomerFragment extends Fragment {
         mDatabaseRefSalesman.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // Is better to use a List, because you don't know the size
-                    // of the iterator returned by dataSnapshot.getChildren() to
-                    // initialize the array
-                    final List<String> salesmanList = new ArrayList<>();
 
+                    final List<String> salesmanList = new ArrayList<>();
                     for (DataSnapshot areaSnapshot : dataSnapshot.getChildren()) {
                         String salesmanName = areaSnapshot.child("salesmanName").getValue(String.class);
                         salesmanList.add(salesmanName);
@@ -102,7 +98,6 @@ public class CustomerFragment extends Fragment {
         addCustomerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 	    mDatabaseRef = FirebaseDatabase.getInstance().getReference(databaseName);
 		String uploadId = mDatabaseRef.push().getKey();
 	    CustomerAdapter customerAdapter = new CustomerAdapter(customerName.getText().toString(),customerNumber.getText().toString(),salesmanAssociated.toString(),area.toString());

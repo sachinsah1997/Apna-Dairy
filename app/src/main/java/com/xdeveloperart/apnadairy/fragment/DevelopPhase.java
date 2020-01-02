@@ -1,4 +1,4 @@
-package com.xdeveloperart.apnadairy;
+package com.xdeveloperart.apnadairy.fragment;
 
 
 import android.app.Activity;
@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-public class DevelopPhase extends Fragment {
+import com.xdeveloperart.apnadairy.R;
 
+public class DevelopPhase extends Fragment {
 
     public DevelopPhase() {
         // Required empty public constructor
