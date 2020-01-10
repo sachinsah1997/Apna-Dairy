@@ -38,12 +38,12 @@ public class CustomerAdapter {
     }
 
     public String salesmanAssociated;
-        public String area;
-    	private static CustomerAdapter instance;
+    public String area;
+    private static CustomerAdapter instance;
 
 	public CustomerAdapter(){}
 
-        public static synchronized CustomerAdapter getInstance(){
+    public static synchronized CustomerAdapter getInstance(){
             if(instance==null){
                 instance=new CustomerAdapter();
             }

@@ -2,25 +2,22 @@ package com.xdeveloperart.apnadairy.adapter;
 
 public class ProfileApdater {
 
-
-
     //profile
-
     String pname;
     String paddress;
     String pnumber;
     String pgender;
+    private static ProfileApdater instance;
 
-    String imgurl;
+    public ProfileApdater(){}
 
-
-    public String getImgurl() {
-        return imgurl;
+    public static synchronized ProfileApdater getInstance(){
+        if(instance==null){
+            instance=new ProfileApdater();
+        }
+        return instance;
     }
 
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
-    }
 
     public String getPname() {
         return pname;
@@ -54,14 +51,11 @@ public class ProfileApdater {
         this.pgender = pgender;
     }
 
-    public ProfileApdater(String imgurl,String pname,String paddress,String pnumber,String pgender){
+    public ProfileApdater(String pname,String paddress,String pnumber,String pgender){
 
-        this.imgurl=imgurl;
         this.pname=pname;
         this.paddress=paddress;
         this.pnumber=pnumber;
         this.pgender =pgender;
-
     }
-
 }

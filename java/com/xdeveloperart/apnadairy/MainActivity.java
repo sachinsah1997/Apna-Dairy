@@ -16,8 +16,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.xdeveloperart.apnadairy.fragment.AreaFragment;
+import com.xdeveloperart.apnadairy.fragment.HomeFragment;
+import com.xdeveloperart.apnadairy.fragment.ProductFragment;
 import com.xdeveloperart.apnadairy.fragment.RecycleListViewFragment;
 import com.xdeveloperart.apnadairy.fragment.DevelopPhase;
+import com.xdeveloperart.apnadairy.fragment.ViewProfileFragment;
 import com.xdeveloperart.apnadairy.navigationdrawer.FragmentDrawer;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new DevelopPhase();
+                fragment = new HomeFragment();
                subtitle = getString(R.string.title_home);
                 // set the toolbar title
                 getSupportActionBar().setSubtitle(subtitle);
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_shop:
-                    fragment = new DevelopPhase();
+                    fragment = new HomeFragment();
                     loadFragment(fragment);
 
                     subtitle = getString(R.string.title_shop);
@@ -167,15 +170,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     return true;
                 case R.id.navigation_cart:
 
-                    fragment = new DevelopPhase();
+                    fragment = new RecycleListViewFragment();
                     loadFragment(fragment);
-                    subtitle = getString(R.string.title_cart);
+                    subtitle = "સ્ટોક";
+                    bundle.putString("database", "productInfo");
+                    bundle.putString("stock","updateStock");
+                    fragment.setArguments(bundle);
                     getSupportActionBar().setSubtitle(subtitle);
 
                     return true;
                 case R.id.navigation_profile:
 
-                    fragment = new AreaFragment();
+                    fragment = new ViewProfileFragment();
                     loadFragment(fragment);
                     subtitle = getString(R.string.title_profile);
                     getSupportActionBar().setSubtitle(subtitle);

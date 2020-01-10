@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:background="#fff"
     android:layout_height="match_parent">
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -13,20 +13,36 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/fragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft ="110dp"
-                android:layout_marginTop ="50dp"
+                android:layout_marginTop ="80dp"
                 android:text="Add New Area"
                 android:textColor="@color/colorAccent"
                 android:textSize="25dp"
                 android:textStyle="bold" />
 
+
+            <Button
+                android:id="@+id/deleteArea"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginLeft="270dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorAccent"
+                android:text="Delete"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="250dp"
+                android:layout_marginTop="200dp"
                 android:layout_marginLeft="140dp"
                 android:text="Area Name"
                 android:textColor="@color/colorAccent" />
@@ -40,7 +56,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="80dp"
                 android:layout_marginLeft="80dp"
-                android:layout_marginTop="280dp"
+                android:layout_marginTop="230dp"
                 android:background="@drawable/edittext_background"
                 android:padding="10dp" />
 

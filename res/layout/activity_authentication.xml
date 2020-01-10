@@ -253,26 +253,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/image"
-                android:layout_alignLeft="@+id/pnumber"
-                android:layout_marginLeft="269dp"
-                android:text="edit"
-                android:textColor="@color/colorAccent"
-                android:onClick="btnBrowse_Click"/>
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_alignEnd="@+id/updateprofile"
-                android:layout_alignRight="@+id/updateprofile"
-                android:layout_marginTop="22dp"
-                android:cropToPadding="true"
-                android:src="@color/bgBottomNavigation"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_above="@+id/pname"
                 android:layout_alignStart="@+id/pname"
                 android:layout_marginBottom="-95dp"
@@ -379,31 +359,6 @@
                     android:text="female" />
             </RadioGroup>
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/pnumber"
-                android:layout_alignStart="@+id/pnumber"
-                android:layout_marginBottom="-415dp"
-                android:text="Email Address"
-                android:textColor="@color/colorAccent"
-                android:layout_alignLeft="@+id/pnumber" />
-
-            <EditText
-                android:id="@+id/pemail"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="420dp"
-                android:background="@drawable/edittext_background"
-                android:inputType="textEmailAddress"
-                android:padding="10dp" />
-
             <Button
                 android:id="@+id/updateprofile"
                 android:layout_width="match_parent"
@@ -412,7 +367,7 @@
                 android:text="Continue"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="480dp"
+                android:layout_marginTop="440dp"
                 android:textColor="#fff"
                 android:textStyle="bold"
                 android:onClick="Upload_Click"

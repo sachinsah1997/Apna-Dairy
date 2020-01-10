@@ -262,95 +262,28 @@ public class AuthenticationActivity extends AppCompatActivity {
                 });
     }
 
-    public void btnBrowse_Click(View v) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imgUri = data.getData();
-
-            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1, 1).start(this);
-        }
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            if (resultCode == RESULT_OK) { cropUri = result.getUri();
-                try {
-                    bm = MediaStore.Images.Media.getBitmap(getContentResolver(), cropUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                imageView.setImageBitmap(bm);
-            }
-        }
-    }
-
-    public String getImageExt(Uri uri) {
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
-
     @SuppressWarnings("VisibleForTests")
     public void Upload_Click(View v) {
 
-        if (imgUri != null) {
             final ProgressDialog dialog = new ProgressDialog(this);
             dialog.setTitle("Setting up your profile");
             dialog.show();
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            //here you can choose quality factor in third parameter(ex. i choosen 25)
-            bm.compress(Bitmap.CompressFormat.JPEG, 25, baos);
-            byte[] fileInBytes = baos.toByteArray();
 
             // get selected radio button from radioGroup
             int selectedId = radioSexGroup.getCheckedRadioButtonId();
             // find the radiobutton by returned id
             radioSexButton = (RadioButton) findViewById(selectedId);
 
-            //Get the storage reference
-            final StorageReference ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + imgUri.getLastPathSegment());
+            //Display success toast msg
+            Toast.makeText(getApplicationContext(), "Profile Updated.", Toast.LENGTH_SHORT).show();
+            ProfileApdater profiledetail = new ProfileApdater(pname.getText().toString(), paddress.getText().toString(), pnumber.getText().toString(), radioSexButton.getText().toString());
 
-            ref.putFile(imgUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
-                    return ref.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
-
-                        dialog.dismiss();
-
-                        Uri downloadUri = task.getResult();
-
-                        //Display success toast msg
-                        Toast.makeText(getApplicationContext(), "Profile Updated.", Toast.LENGTH_SHORT).show();
-                        ProfileApdater profiledetail = new ProfileApdater(downloadUri.toString(),pname.getText().toString(),paddress.getText().toString(),pnumber.getText().toString(),radioSexButton.getText().toString());
-
-                        //Save image info in to firebase database
-                        String uploadId = mDatabaseRef.push().getKey();
-                        mDatabaseRef.child(uploadId).setValue(profiledetail);
-                        Intent intent= new Intent(AuthenticationActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
+            //Save image info in to firebase database
+            String uploadId = mDatabaseRef.push().getKey();
+            mDatabaseRef.child(uploadId).setValue(profiledetail);
+            Intent intent = new Intent(AuthenticationActivity.this, MainActivity.class);
+            startActivity(intent);
     }
 }
+
+

@@ -7,10 +7,10 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="nav_item_home">Home</string>
-    <string name="nav_item_product">Product</string>
-    <string name="nav_item_customer">Customer</string>
-    <string name="nav_item_salesman">Salesman</string>
-    <string name="nav_item_area">Area</string>
+    <string name="nav_item_product">માલ</string>
+    <string name="nav_item_customer">ગ્રાહક</string>
+    <string name="nav_item_salesman">વેચાણકર્તા</string>
+    <string name="nav_item_area">વિસ્તાર</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
@@ -22,15 +22,16 @@
     </string-array>
 
     <!-- titles  -->
-    <string name="title_product">Product</string>
-    <string name="title_customer">Customer</string>
-    <string name="title_salesman">Feedback</string>
+    <string name="title_product">માલ</string>
+    <string name="title_customer">ગ્રાહક</string>
+    <string name="title_salesman">વેચાણકર્તા</string>
     <string name="title_home">Home</string>
     <string name="title_shop">Home</string>
     <string name="title_gifts">News Feed</string>
     <string name="title_cart">My Orders</string>
     <string name="title_profile">Profile</string>
-    <string name="title_area">Area</string>
+    <string name="title_area">વિસ્તાર</string>
+    <string name="update_record">રેકોર્ડ દાખલ કરો</string>
 
 
 </resources>

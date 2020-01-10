@@ -38,6 +38,16 @@ public class ProductAdapter {
         public String piecesPerCarat;
         public String costPrice;
 	public String salesPrice;
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+    public  String stock;
     	private static ProductAdapter instance;
 
 	public ProductAdapter(){}
@@ -53,11 +63,12 @@ public class ProductAdapter {
             ProductAdapter.instance = instance;
         }
 
-  	public ProductAdapter(String productName,String piecesPerCarat,String costPrice,String salesPrice) {
+  	public ProductAdapter(String productName,String piecesPerCarat,String costPrice,String salesPrice,String stock) {
         	this.productName=productName;
         	this.piecesPerCarat=piecesPerCarat;
         	this.costPrice=costPrice;
-		this.salesPrice=salesPrice;
+		    this.salesPrice=salesPrice;
+		    this.stock=stock;
 	}
 }
 
