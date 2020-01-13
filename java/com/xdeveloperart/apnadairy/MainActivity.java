@@ -162,9 +162,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     return true;
                 case R.id.navigation_gifts:
 
-                    fragment = new DevelopPhase();
+                    fragment = new RecycleListViewFragment();
                     loadFragment(fragment);
-                    subtitle = getString(R.string.title_gifts);
+                    subtitle = "સવર્તમાન રેકોર્ડ ડેટા78";
+                    bundle.putString("database", "stockUpdateInfo");
+                    fragment.setArguments(bundle);
                     getSupportActionBar().setSubtitle(subtitle);
 
                     return true;

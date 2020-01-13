@@ -1,15 +1,21 @@
 package com.xdeveloperart.apnadairy.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -19,7 +25,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
 import com.xdeveloperart.apnadairy.R;
 import com.xdeveloperart.apnadairy.adapter.AreaAdapter;
 import com.xdeveloperart.apnadairy.adapter.CustomerAdapter;
@@ -29,8 +37,15 @@ import com.xdeveloperart.apnadairy.helper.AreaFirebase;
 import com.xdeveloperart.apnadairy.helper.CustomerFirebase;
 import com.xdeveloperart.apnadairy.helper.ProductFirebase;
 import com.xdeveloperart.apnadairy.helper.SalesmanFirebase;
+import com.xdeveloperart.apnadairy.helper.StockUpdateFirebase;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class RecycleListViewFragment extends Fragment {
 
@@ -39,6 +54,7 @@ public class RecycleListViewFragment extends Fragment {
     private List<SalesmanAdapter> salesmanList = new ArrayList<>();
     private List<ProductAdapter> productList = new ArrayList<>();
     private List<AreaAdapter> areaList = new ArrayList<>();
+    private List<Map> stockUpdateObjList = new ArrayList<>();
     private ListView lv;
     private CustomerFirebase customerFirebaseObj;
     private ProductFirebase productFirebaseObj;
@@ -74,11 +90,15 @@ public class RecycleListViewFragment extends Fragment {
         progressDialog.setMessage("ધૈર્ય રાખો.....");
         progressDialog.show();
 
-        Bundle bundle = this.getArguments();
+        final Bundle bundle = this.getArguments();
 
         try {
             database= bundle.getString("database");
             stock=bundle.getString("stock");
+
+            if (database == null){
+                database = "";
+            }
 
             if (stock != null){
                 openForm.setVisibility(View.GONE);
@@ -107,7 +127,6 @@ public class RecycleListViewFragment extends Fragment {
                     customerFirebaseObj = new CustomerFirebase(getActivity(),R.layout.structure_listview_item,customerList);
                     lv.setAdapter(customerFirebaseObj);
                 }
-
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     progressDialog.dismiss();
                 }
@@ -125,9 +144,13 @@ public class RecycleListViewFragment extends Fragment {
                         ProductAdapter productData = snapshot.getValue(ProductAdapter.class);
                         productList.add(productData);
                     }
-                    if(stock == null || stock == "stockUpdate") {
+                    if(stock == null ) {
                         productFirebaseObj = new ProductFirebase(getActivity(), R.layout.structure_listview_item, productList);
-                    } else{
+                    }
+                    else if (stock.equals("visibility.gone")) {
+                        productFirebaseObj = new ProductFirebase(getActivity(), R.layout.structure_listview_item, productList);
+                    }
+                    else {
                         productFirebaseObj = new ProductFirebase(getActivity(), R.layout.structure_listview_stock_update, productList);
                     }
                     lv.setAdapter(productFirebaseObj);
@@ -181,9 +204,32 @@ public class RecycleListViewFragment extends Fragment {
                     progressDialog.dismiss();
                 }
             });
+        }else if (database.equals("stockUpdateInfo")) {
+
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference(database);
+            mDatabaseRef.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    progressDialog.dismiss();
+
+                    Map<String,String> stockUpdate = new HashMap<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        stockUpdate.put("date", snapshot.child("date").getValue(String.class));
+                        stockUpdateObjList.add(stockUpdate);
+                    }
+                    StockUpdateFirebase stockUpdateFirebaseObj = new StockUpdateFirebase(getActivity(), R.layout.structure_listview_stock_item,stockUpdateObjList);
+                    lv.setAdapter(stockUpdateFirebaseObj);
+                }
+
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    progressDialog.dismiss();
+                }
+            });
         }
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            String customerName = null;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -194,18 +240,57 @@ public class RecycleListViewFragment extends Fragment {
                         fragment = new CustomerFragment();
                         passkey.putString("text", key.getText().toString());
                     }else{
+                        dataExisted = findRecordExistInDatabase(mDatabaseRef,customerName);
                         fragment = new RecycleListViewFragment();
                         passkey.putString("database", "productInfo");
-                        passkey.putString("stock","stockUpdate");
+                        passkey.putString("customerName", key.getText().toString());
+                        passkey.putString("stock","visibility.gone");
+
                     }
                     fragment.setArguments(passkey);
                     fragmentMethodCall(fragment);
                 }
+
+
                 else if(database.equals("productInfo")){
-                    fragment = new ProductFragment();
-                    passkey.putString("text", key.getText().toString());
-                    fragment.setArguments(passkey);
-                    fragmentMethodCall(fragment);
+
+                    try{
+                       customerName = bundle.getString("customerName");
+                    }catch (Exception e){
+                        System.out.println("no customer pass");
+                    }
+                    if(customerName == null){
+                        fragment = new ProductFragment();
+                        passkey.putString("text", key.getText().toString());
+                        fragment.setArguments(passkey);
+                        fragmentMethodCall(fragment);
+                    }else{
+                        openForm.setVisibility(View.GONE);
+                        final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                        mDatabaseRef = FirebaseDatabase.getInstance().getReference("stockUpdateInfo").child(currentDate);
+                        dataExisted = findRecordExistInDatabase(mDatabaseRef,currentDate);
+                        dataExisted = findRecordExistInDatabase(mDatabaseRef,currentDate);
+
+
+                       if(dataExisted) {
+                           showDialogStockUpdate(key.getText().toString(),customerName,"add");
+                         }else{
+                           String uploadId = mDatabaseRef.push().getKey();
+                           mDatabaseRef.child(uploadId).child("date").setValue(currentDate);
+                           mDatabaseRef.child(uploadId).child("customerName").setValue(customerName);
+                           mDatabaseRef.child(uploadId).child("total").setValue("0");
+                           mDatabaseRef.child(uploadId).child("deposit").setValue("0");
+                           mDatabaseRef.child(uploadId).child("remain").setValue("0");
+
+                           for (int i = 0; i < lv.getCount(); i++) {
+                               view = lv.getChildAt(i);
+                               TextView text = view.findViewById(R.id.textView);
+                               mDatabaseRef.child(uploadId).child(text.getText().toString()).setValue("0");
+                           }
+                           Toast.makeText(getActivity(), "વર્તમાન તારીખ માટે રેકોર્ડ ઉમેર્યો", Toast.LENGTH_SHORT).show();
+                       }
+
+                    }
 
                 } else if (database.equals("areaInfo")){
                     fragment = new AreaFragment();
@@ -213,6 +298,7 @@ public class RecycleListViewFragment extends Fragment {
                     passkey.putString("text", keyValue);
                     fragment.setArguments(passkey);
                     fragmentMethodCall(fragment);
+
                 } else if (database.equals("salesmanInfo")){
                    fragment = new SalesmanFragment();
                     String keyValue = key.getText().toString();
@@ -253,6 +339,72 @@ public class RecycleListViewFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    boolean dataExisted ;
+    boolean findRecordExistInDatabase(DatabaseReference mDatabaseRef, String customerName){
+
+        mDatabaseRef.orderByChild("customerName").equalTo(customerName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot tasksSnapshot) {
+
+                if (tasksSnapshot.getValue() == null) {
+                    dataExisted = true;
+                }else{
+                    dataExisted  = false;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+        return dataExisted;
+    }
+
+    protected void showDialogStockUpdate(final String productName, final String customerName, final String operation) {
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setCancelable(true);
+
+        View view = getActivity().getLayoutInflater().inflate(R.layout.stock_update_dialog_box, null);
+        dialog.setContentView(view);
+
+        final EditText valueEditText = view.findViewById(R.id.sValue);
+        Button operationButton = view.findViewById(R.id.stockOperationButton);
+
+        final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+        final DatabaseReference mDatabaseRef;
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("stockUpdateInfo").child(currentDate);
+
+        operationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Query pendingTasks = mDatabaseRef.orderByChild("date").equalTo(currentDate);
+                pendingTasks.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot tasksSnapshot) {
+                        for (DataSnapshot snapshot : tasksSnapshot.getChildren()) {
+
+                                  if((snapshot.child("customerName").getValue(String.class)).equals(customerName)){
+                                    snapshot.getRef().child(productName).setValue("20");
+                                    }
+                        dialog.dismiss();
+                    }
+                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+        dialog.show();
+
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -262,4 +414,8 @@ public class RecycleListViewFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+
+
+
 }

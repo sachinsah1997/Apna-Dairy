@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.xdeveloperart.apnadairy.R;
 import com.xdeveloperart.apnadairy.adapter.ProductAdapter;
 import com.xdeveloperart.apnadairy.fragment.HomeFragment;
-import com.xdeveloperart.apnadairy.fragment.ProductFragment;
 
 import java.util.List;
 
@@ -70,7 +68,6 @@ import java.util.List;
             productName.setText(list.get(position).getProductName());
 
             try {
-
                 ImageView additionImage = v.findViewById(R.id.additionImage);
                 ImageView subtractionImage = v.findViewById(R.id.subtractionImage);
                 final TextView stock = v.findViewById(R.id.stockTextView);
