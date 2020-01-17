@@ -47,8 +47,6 @@ public class StockUpdateFirebase extends ArrayAdapter<Map> {
 
             View v = inflater.inflate(resource, null);
             TextView salesmanName =  v.findViewById(R.id.textView);
-            Object obj = list.get(position).get("date");
-            salesmanName.setText(obj.);
             return v;
         }
     }

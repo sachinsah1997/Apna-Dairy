@@ -240,7 +240,6 @@ public class RecycleListViewFragment extends Fragment {
                         fragment = new CustomerFragment();
                         passkey.putString("text", key.getText().toString());
                     }else{
-                        dataExisted = findRecordExistInDatabase(mDatabaseRef,customerName);
                         fragment = new RecycleListViewFragment();
                         passkey.putString("database", "productInfo");
                         passkey.putString("customerName", key.getText().toString());
@@ -268,27 +267,27 @@ public class RecycleListViewFragment extends Fragment {
                         openForm.setVisibility(View.GONE);
                         final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                         mDatabaseRef = FirebaseDatabase.getInstance().getReference("stockUpdateInfo").child(currentDate);
+
                         dataExisted = findRecordExistInDatabase(mDatabaseRef,currentDate);
-                        dataExisted = findRecordExistInDatabase(mDatabaseRef,currentDate);
 
+                        if(!dataExisted) {
+                            String uploadId = mDatabaseRef.push().getKey();
+                            mDatabaseRef.child(uploadId).child("date").setValue(currentDate);
+                            mDatabaseRef.child(uploadId).child("customerName").setValue(customerName);
+                            mDatabaseRef.child(uploadId).child("total").setValue("0");
+                            mDatabaseRef.child(uploadId).child("deposit").setValue("0");
+                            mDatabaseRef.child(uploadId).child("remain").setValue("0");
 
-                       if(dataExisted) {
-                           showDialogStockUpdate(key.getText().toString(),customerName,"add");
-                         }else{
-                           String uploadId = mDatabaseRef.push().getKey();
-                           mDatabaseRef.child(uploadId).child("date").setValue(currentDate);
-                           mDatabaseRef.child(uploadId).child("customerName").setValue(customerName);
-                           mDatabaseRef.child(uploadId).child("total").setValue("0");
-                           mDatabaseRef.child(uploadId).child("deposit").setValue("0");
-                           mDatabaseRef.child(uploadId).child("remain").setValue("0");
-
-                           for (int i = 0; i < lv.getCount(); i++) {
-                               view = lv.getChildAt(i);
-                               TextView text = view.findViewById(R.id.textView);
-                               mDatabaseRef.child(uploadId).child(text.getText().toString()).setValue("0");
-                           }
-                           Toast.makeText(getActivity(), "વર્તમાન તારીખ માટે રેકોર્ડ ઉમેર્યો", Toast.LENGTH_SHORT).show();
-                       }
+                            for (int i = 0; i < lv.getCount(); i++) {
+                                view = lv.getChildAt(i);
+                                TextView text = view.findViewById(R.id.textView);
+                                mDatabaseRef.child(uploadId).child(text.getText().toString()).setValue("0");
+                            }
+                            Toast.makeText(getActivity(), "વર્તમાન તારીખ માટે રેકોર્ડ ઉમેર્યો", Toast.LENGTH_SHORT).show();
+                        }else
+                        {
+                            showDialogStockUpdate(mDatabaseRef,currentDate,key.getText().toString(),customerName,"add");
+                        }
 
                     }
 
@@ -359,7 +358,7 @@ public class RecycleListViewFragment extends Fragment {
         return dataExisted;
     }
 
-    protected void showDialogStockUpdate(final String productName, final String customerName, final String operation) {
+    protected void showDialogStockUpdate(final DatabaseReference mDatabaseRef,final String currentDate, final String productName, final String customerName, final String operation) {
 
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
@@ -367,16 +366,13 @@ public class RecycleListViewFragment extends Fragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.stock_update_dialog_box, null);
         dialog.setContentView(view);
 
-        final EditText valueEditText = view.findViewById(R.id.sValue);
+        final EditText valueEditTextQty = view.findViewById(R.id.sValue);
         Button operationButton = view.findViewById(R.id.stockOperationButton);
 
-        final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-
-        final DatabaseReference mDatabaseRef;
-
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("stockUpdateInfo").child(currentDate);
 
         operationButton.setOnClickListener(new View.OnClickListener() {
+             Integer total,previoustotal;
+            String totalString;
             @Override
             public void onClick(View v) {
 
@@ -384,11 +380,40 @@ public class RecycleListViewFragment extends Fragment {
                 pendingTasks.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot tasksSnapshot) {
-                        for (DataSnapshot snapshot : tasksSnapshot.getChildren()) {
+                        for (final DataSnapshot snapshot : tasksSnapshot.getChildren()) {
 
-                                  if((snapshot.child("customerName").getValue(String.class)).equals(customerName)){
-                                    snapshot.getRef().child(productName).setValue("20");
-                                    }
+                            if((snapshot.child("customerName").getValue(String.class)).equals(customerName)) {
+                                final String previousQty = snapshot.child(productName).getValue(String.class);
+                                final String previoustotal = snapshot.child("total").getValue(String.class);
+                               final String enteredQty = valueEditTextQty.getText().toString().trim();
+                                final Integer totalQty = Integer.parseInt(previousQty) + Integer.parseInt(enteredQty);
+                                snapshot.getRef().child(productName).setValue(Integer.toString(totalQty));
+
+                                      DatabaseReference mDatabaseRefProduct = FirebaseDatabase.getInstance().getReference("productInfo");
+                                      Query pendingTasks = mDatabaseRefProduct.orderByChild("productName").equalTo(productName);
+                                      pendingTasks.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                          public void onDataChange(DataSnapshot tasksSnapshot) {
+                                              for (final DataSnapshot snapshot : tasksSnapshot.getChildren()) {
+                                                  String salesPrice = snapshot.child("salesPrice").getValue(String.class);
+                                                  if (salesPrice != null) {
+                                                      total = Integer.parseInt(enteredQty) * Integer.parseInt(salesPrice) + Integer.parseInt(previoustotal);
+
+                                                  } else {
+                                                      total = 0;
+                                                  }
+                                              }
+                                               totalString = Integer.toString(total);
+                                              snapshot.getRef().child("total").setValue(totalString);
+                                          }
+
+                                          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                          }
+                                      });
+
+                            }
+
                         dialog.dismiss();
                     }
                 }
@@ -414,8 +439,4 @@ public class RecycleListViewFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
-
-
 }
