@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -27,25 +26,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonObject;
 import com.xdeveloperart.apnadairy.R;
 import com.xdeveloperart.apnadairy.adapter.AreaAdapter;
 import com.xdeveloperart.apnadairy.adapter.CustomerAdapter;
 import com.xdeveloperart.apnadairy.adapter.ProductAdapter;
 import com.xdeveloperart.apnadairy.adapter.SalesmanAdapter;
+import com.xdeveloperart.apnadairy.adapter.TransactionAdapter;
 import com.xdeveloperart.apnadairy.helper.AreaFirebase;
 import com.xdeveloperart.apnadairy.helper.CustomerFirebase;
 import com.xdeveloperart.apnadairy.helper.ProductFirebase;
 import com.xdeveloperart.apnadairy.helper.SalesmanFirebase;
-import com.xdeveloperart.apnadairy.helper.StockUpdateFirebase;
-
+import com.xdeveloperart.apnadairy.helper.TransactionFirebase;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class RecycleListViewFragment extends Fragment {
 
@@ -54,7 +50,7 @@ public class RecycleListViewFragment extends Fragment {
     private List<SalesmanAdapter> salesmanList = new ArrayList<>();
     private List<ProductAdapter> productList = new ArrayList<>();
     private List<AreaAdapter> areaList = new ArrayList<>();
-    private List<Map> stockUpdateObjList = new ArrayList<>();
+    private List<TransactionAdapter> transcationList = new ArrayList<>();
     private ListView lv;
     private CustomerFirebase customerFirebaseObj;
     private ProductFirebase productFirebaseObj;
@@ -64,6 +60,7 @@ public class RecycleListViewFragment extends Fragment {
     private Fragment fragment;
     String subtitle,database,stock;
     private ImageButton openForm;
+    private boolean dataExisted;
     Bundle passkey = new Bundle();
 
     public RecycleListViewFragment() {
@@ -102,8 +99,7 @@ public class RecycleListViewFragment extends Fragment {
 
             if (stock != null){
                 openForm.setVisibility(View.GONE);
-            }
-            else{
+            } else {
                 openForm.setVisibility(View.VISIBLE);
             }
 
@@ -146,11 +142,9 @@ public class RecycleListViewFragment extends Fragment {
                     }
                     if(stock == null ) {
                         productFirebaseObj = new ProductFirebase(getActivity(), R.layout.structure_listview_item, productList);
-                    }
-                    else if (stock.equals("visibility.gone")) {
+                    } else if (stock.equals("visibility.gone")) {
                         productFirebaseObj = new ProductFirebase(getActivity(), R.layout.structure_listview_item, productList);
-                    }
-                    else {
+                    } else {
                         productFirebaseObj = new ProductFirebase(getActivity(), R.layout.structure_listview_stock_update, productList);
                     }
                     lv.setAdapter(productFirebaseObj);
@@ -204,7 +198,8 @@ public class RecycleListViewFragment extends Fragment {
                     progressDialog.dismiss();
                 }
             });
-        }else if (database.equals("stockUpdateInfo")) {
+
+        }else if (database.equals("transactionInfo")) {
 
             mDatabaseRef = FirebaseDatabase.getInstance().getReference(database);
             mDatabaseRef.addValueEventListener(new ValueEventListener() {
@@ -213,13 +208,13 @@ public class RecycleListViewFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     progressDialog.dismiss();
 
-                    Map<String,String> stockUpdate = new HashMap<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        stockUpdate.put("date", snapshot.child("date").getValue(String.class));
-                        stockUpdateObjList.add(stockUpdate);
+                        TransactionAdapter transactionData = snapshot.getValue(TransactionAdapter.class);
+                        transcationList.add(transactionData);
                     }
-                    StockUpdateFirebase stockUpdateFirebaseObj = new StockUpdateFirebase(getActivity(), R.layout.structure_listview_stock_item,stockUpdateObjList);
-                    lv.setAdapter(stockUpdateFirebaseObj);
+
+                    TransactionFirebase transactionFirebaseObj = new TransactionFirebase(getActivity(), R.layout.structure_listview_stock_item,transcationList);
+                    lv.setAdapter(transactionFirebaseObj);
                 }
 
                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -232,8 +227,8 @@ public class RecycleListViewFragment extends Fragment {
             String customerName = null;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 final TextView key = view.findViewById(R.id.textView);
+
                 if(database.equals("customerInfo")) {
 
                     if (stock == null){
@@ -244,12 +239,10 @@ public class RecycleListViewFragment extends Fragment {
                         passkey.putString("database", "productInfo");
                         passkey.putString("customerName", key.getText().toString());
                         passkey.putString("stock","visibility.gone");
-
                     }
                     fragment.setArguments(passkey);
                     fragmentMethodCall(fragment);
                 }
-
 
                 else if(database.equals("productInfo")){
 
@@ -266,29 +259,20 @@ public class RecycleListViewFragment extends Fragment {
                     }else{
                         openForm.setVisibility(View.GONE);
                         final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                        mDatabaseRef = FirebaseDatabase.getInstance().getReference("stockUpdateInfo").child(currentDate);
+                        mDatabaseRef = FirebaseDatabase.getInstance().getReference("transactionInfo").child(currentDate);
 
-                        dataExisted = findRecordExistInDatabase(mDatabaseRef,currentDate);
-
+                        dataExisted = findRecordExistInDatabase(mDatabaseRef,customerName);
                         if(!dataExisted) {
-                            String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).child("date").setValue(currentDate);
-                            mDatabaseRef.child(uploadId).child("customerName").setValue(customerName);
-                            mDatabaseRef.child(uploadId).child("total").setValue("0");
-                            mDatabaseRef.child(uploadId).child("deposit").setValue("0");
-                            mDatabaseRef.child(uploadId).child("remain").setValue("0");
-
-                            for (int i = 0; i < lv.getCount(); i++) {
-                                view = lv.getChildAt(i);
-                                TextView text = view.findViewById(R.id.textView);
-                                mDatabaseRef.child(uploadId).child(text.getText().toString()).setValue("0");
-                            }
-                            Toast.makeText(getActivity(), "વર્તમાન તારીખ માટે રેકોર્ડ ઉમેર્યો", Toast.LENGTH_SHORT).show();
-                        }else
-                        {
-                            showDialogStockUpdate(mDatabaseRef,currentDate,key.getText().toString(),customerName,"add");
+                            insertTransactionRecord(mDatabaseRef,currentDate,customerName,view);
+                        }else {
+                            boolean home= false;
+                           try {
+                              home = bundle.getBoolean("home");
+                           }catch (Exception E){
+                               Log.d("scs","home is null");
+                           }
+                            showDialogStockUpdate(mDatabaseRef,currentDate,key.getText().toString(),customerName,home,"add");
                         }
-
                     }
 
                 } else if (database.equals("areaInfo")){
@@ -338,17 +322,17 @@ public class RecycleListViewFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    boolean dataExisted ;
+
     boolean findRecordExistInDatabase(DatabaseReference mDatabaseRef, String customerName){
 
-        mDatabaseRef.orderByChild("customerName").equalTo(customerName).addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.orderByChild("customerName").equalTo(customerName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot tasksSnapshot) {
 
                 if (tasksSnapshot.getValue() == null) {
-                    dataExisted = true;
+                    dataExisted = false;
                 }else{
-                    dataExisted  = false;
+                    dataExisted  = true;
                 }
             }
             @Override
@@ -358,7 +342,21 @@ public class RecycleListViewFragment extends Fragment {
         return dataExisted;
     }
 
-    protected void showDialogStockUpdate(final DatabaseReference mDatabaseRef,final String currentDate, final String productName, final String customerName, final String operation) {
+    //method for inserting new child for transaction/date/child
+    protected void insertTransactionRecord(DatabaseReference mDatabaseRef,String currentDate,String customerName, View view){
+        String uploadId = mDatabaseRef.push().getKey();
+        TransactionAdapter transactionAdapter = new TransactionAdapter(currentDate,customerName,0,0,0,0,0);
+        mDatabaseRef.child(uploadId).setValue(transactionAdapter);
+        for (int i = 0; i < lv.getCount(); i++) {
+            view = lv.getChildAt(i);
+            TextView text = view.findViewById(R.id.textView);
+            mDatabaseRef.child(uploadId).child("product").child(text.getText().toString()).setValue("0");
+        }
+        Toast.makeText(getActivity(), "વર્તમાન તારીખ માટે રેકોર્ડ ઉમેર્યો", Toast.LENGTH_SHORT).show();
+    }
+
+    //method for updating product qty for transaction/date/child/product --> qty
+    protected void showDialogStockUpdate(final DatabaseReference mDatabaseRef,final String currentDate, final String productName, final String customerName, final boolean home,final String operation) {
 
         final Dialog dialog = new Dialog(getActivity());
         dialog.setCancelable(true);
@@ -383,11 +381,15 @@ public class RecycleListViewFragment extends Fragment {
                         for (final DataSnapshot snapshot : tasksSnapshot.getChildren()) {
 
                             if((snapshot.child("customerName").getValue(String.class)).equals(customerName)) {
-                                final String previousQty = snapshot.child(productName).getValue(String.class);
+                                final String previousQty = snapshot.child("product").child(productName).getValue(String.class);
                                 final String previoustotal = snapshot.child("total").getValue(String.class);
                                final String enteredQty = valueEditTextQty.getText().toString().trim();
-                                final Integer totalQty = Integer.parseInt(previousQty) + Integer.parseInt(enteredQty);
-                                snapshot.getRef().child(productName).setValue(Integer.toString(totalQty));
+                               if (home == false){
+                                   final Integer totalQty = Integer.parseInt(previousQty) + Integer.parseInt(enteredQty);
+                                   snapshot.getRef().child(productName).setValue(Integer.toString(totalQty));
+                               }else {
+                                   snapshot.getRef().child(productName).setValue(previousQty+enteredQty);
+                               }
 
                                       DatabaseReference mDatabaseRefProduct = FirebaseDatabase.getInstance().getReference("productInfo");
                                       Query pendingTasks = mDatabaseRefProduct.orderByChild("productName").equalTo(productName);

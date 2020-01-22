@@ -140,5 +140,32 @@
         android:textColor="@color/bgBottomNavigation"
         android:textSize="20dp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/updateHomeImageView"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="340dp"
+        android:src="@mipmap/home" />
+
+    <TextView
+        android:id="@+id/updateHomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="420dp"
+        android:text="ઘર થી દાખલ કરો"
+        android:textColor="@color/bgBottomNavigation"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 </RelativeLayout>
 

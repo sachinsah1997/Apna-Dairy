@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     fragment = new RecycleListViewFragment();
                     loadFragment(fragment);
                     subtitle = "સવર્તમાન રેકોર્ડ ડેટાs";
-                    bundle.putString("database", "stockUpdateInfo");
+                    bundle.putString("database", "transactionInfo");
                     fragment.setArguments(bundle);
                     getSupportActionBar().setSubtitle(subtitle);
 

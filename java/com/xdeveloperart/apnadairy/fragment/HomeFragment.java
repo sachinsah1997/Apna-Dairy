@@ -16,7 +16,7 @@ import com.xdeveloperart.apnadairy.R;
 public class HomeFragment extends Fragment {
 
     Fragment fragment;
-    ImageView customerImageView,salesmaImageView,areaImageView,productImageView,updateImageView;
+    ImageView customerImageView,salesmaImageView,areaImageView,productImageView,updateImageView,updateHomeImageView;
     Bundle bundle = new Bundle();
     String subtitle;
 
@@ -38,6 +38,7 @@ public class HomeFragment extends Fragment {
             productImageView=  rootView.findViewById(R.id.productImageView);
             areaImageView=  rootView.findViewById(R.id.areaImageView);
             updateImageView = rootView.findViewById(R.id.updateImageView);
+            updateHomeImageView = rootView.findViewById(R.id.updateHomeImageView);
 
             customerImageView.setOnClickListener(new View.OnClickListener() {
 
@@ -108,6 +109,23 @@ public class HomeFragment extends Fragment {
                     subtitle = getString(R.string.update_record);
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(subtitle);
                     fragmentMethodCall(fragment);
+                }
+            });
+
+            updateHomeImageView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+//                    fragment=new RecycleListViewFragment();
+//                    bundle.putString("database", "customerInfo");
+//                    bundle.putString("stock","stockUpdate");
+//                    bundle.putString("boolean","sdf");
+//                    bundle.putBoolean("home",true);
+//                    fragment.setArguments(bundle);
+//                    subtitle = getString(R.string.update_record);
+//                    ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(subtitle);
+//                    fragmentMethodCall(fragment);
                 }
             });
 
